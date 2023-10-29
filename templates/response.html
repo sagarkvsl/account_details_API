@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Account Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+        h1 {
+            background-color: #73ac13;
+            color: white;
+            padding: 10px;
+        }
+        .json-container {
+            background-color: #333;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .json-box {
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #666;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            color: #00ff00; /* Green text color for response data */
+        }
+        .json-key {
+            font-weight: bold;
+            color: #f3f6f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Account Details</h1>
+    <div class="json-container">
+        <script>
+            function formatJSON(obj, parentElement) {
+                for (var key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        var box = document.createElement("div");
+                        box.className = "json-box";
+                        
+                        var element = document.createElement("div");
+                        element.innerHTML = '<span class="json-key">' + key + ':</span> ';
+
+                        if (typeof obj[key] === 'object') {
+                            // If it's an object or array, recursively format it
+                            formatJSON(obj[key], element);
+                        } else {
+                            element.innerHTML += obj[key];
+                        }
+
+                        box.appendChild(element);
+                        parentElement.appendChild(box);
+                    }
+                }
+            }
+
+            var data = JSON.parse('{{ data | tojson | safe }}');
+            formatJSON(data, document.querySelector('.json-container'));
+        </script>
+    </div>
+</body>
+</html>
